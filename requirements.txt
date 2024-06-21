@@ -1,6 +1,4 @@
-typing
-rasa_sdk
+rasa
 requests
 json
-logging
-gunicorn
+Gunicorn
