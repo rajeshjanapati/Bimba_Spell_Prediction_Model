@@ -3,3 +3,4 @@ rasa_sdk
 requests
 json
 logging
+gunicorn
