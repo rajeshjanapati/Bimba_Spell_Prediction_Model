@@ -1,4 +1,0 @@
-rasa
-rasa-sdk
-requests
-Gunicorn
