@@ -1,0 +1,59 @@
+version: "3.1"
+
+stories:
+- story: ask for number of products and handle prediction
+  steps:
+    - intent: greet
+    - action: utter_greet
+    - action: utter_ask_bimba_spell
+    - intent: BIMBA_Spell
+    - action: utter_ask_bimba_option
+    - intent: select_prediction_model
+    - action: utter_ask_number_of_products
+    - intent: provide_number_of_products
+      entities:
+        - number_of_products: 400
+    - slot_was_set:
+        - number_of_products: 400
+    - action: action_handle_prediction_model
+
+- story: User asks a question
+  steps:
+    - intent: ask_question
+    - action: action_query_gpt
+    - action: utter_ask_bimba_spell
+
+- story: play with parameters
+  steps:
+    - intent: greet
+    - action: utter_greet
+    - action: utter_ask_bimba_spell
+    - intent: BIMBA_Spell
+    - action: utter_ask_bimba_option
+    - intent: select_play_with_parameters
+    - action: utter_ask_motor_speed
+    - intent: inform_motor_speed
+      entities:
+        - motor_speed: "80"
+    - slot_was_set:
+        - motor_speed: "80"
+    - action: action_handle_play_with_parameters
+
+- story: file upload request
+  steps:
+    - intent: greet
+    - action: utter_greet
+    - action: utter_ask_bimba_spell
+    - intent: request_file_upload
+    - action: utter_file_upload_link
+
+- story: handle other option
+  steps:
+    - intent: greet
+    - action: utter_greet
+    - action: utter_ask_bimba_spell
+    - intent: other
+    - action: utter_ask_question
+    - intent: ask_question
+    - action: action_query_gpt
+    - action: utter_ask_bimba_spell

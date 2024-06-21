@@ -1,0 +1,31 @@
+version: "3.1"
+
+rules:
+
+- rule: Say goodbye anytime the user says goodbye
+  steps:
+    - intent: goodbye
+    - action: utter_goodbye
+
+- rule: Say 'I am a bot' anytime the user challenges
+  steps:
+    - intent: bot_challenge
+    - action: utter_iamabot
+
+- rule: greet user on conversation start
+  steps:
+    - intent: greet
+    - action: utter_greet
+    - action: utter_ask_bimba_spell
+
+- rule: Handle other option
+  steps:
+    - intent: other
+    - action: utter_other_option
+    - action: utter_ask_bimba_spell
+
+- rule: Handle question after asking for it
+  steps:
+    - intent: ask_question
+    - action: action_query_gpt
+    - action: utter_ask_bimba_spell

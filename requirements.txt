@@ -1,0 +1,5 @@
+typing
+rasa_sdk
+requests
+json
+logging
