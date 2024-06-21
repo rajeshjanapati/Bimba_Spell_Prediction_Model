@@ -1,16 +1,25 @@
-FROM rasa/rasa-sdk:latest
+FROM rasa/rasa:latest-full
+
+# Install supervisord
+RUN apt-get update && apt-get install -y supervisor
 
 # Set environment variables
 ENV RASA_ACTION_PORT=5055
 
-# Copy actions
-COPY actions /app/actions
+# Copy Rasa files
+COPY . /app
 
 # Set working directory
 WORKDIR /app
 
-# Expose the port
-EXPOSE 5055
+# Install any additional dependencies
+RUN pip install -r requirements.txt
 
-# Run action server
-CMD ["start", "--actions", "actions"]
+# Copy supervisord configuration
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+# Expose the ports for Rasa and Rasa actions
+EXPOSE 5005 5055
+
+# Run supervisord
+CMD ["supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
