@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: rasa-server
+    env: docker
+    plan: free
+    dockerfilePath: Dockerfile
+    envVars:
+      - key: RASA_PORT
+        value: 5005
+    healthCheckPath: /
+    autoDeploy: true
+
+  - type: web
+    name: rasa-action-server
+    env: docker
+    plan: free
+    dockerfilePath: action-server.Dockerfile
+    envVars:
+      - key: RASA_ACTION_PORT
+        value: 5055
+    healthCheckPath: /
+    autoDeploy: true
