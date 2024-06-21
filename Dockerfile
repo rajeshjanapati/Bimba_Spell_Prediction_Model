@@ -1,6 +1,12 @@
 # Use the official Rasa image
 FROM rasa/rasa:latest-full
 
+# Switch to root user to install packages
+USER root
+
+# Install supervisord
+RUN apt-get update && apt-get install -y supervisor
+
 # Set environment variables
 ENV RASA_ACTION_PORT=5055
 
@@ -10,13 +16,6 @@ WORKDIR /app
 # Copy all project files into the container
 COPY . /app
 
-# Install supervisord with elevated permissions
-USER root
-RUN apt-get update && apt-get install -y supervisor
-
-# Switch back to non-root user
-USER 1001
-
 # Install Python dependencies
 RUN pip install -r requirements.txt
 
@@ -25,6 +24,12 @@ EXPOSE 5005 5055
 
 # Copy supervisord configuration
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+# Switch back to a non-root user
+USER 1001
+
+# Ensure the path is set correctly
+ENV PATH="/app/.local/bin:${PATH}"
 
 # Run supervisord
 CMD ["supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
