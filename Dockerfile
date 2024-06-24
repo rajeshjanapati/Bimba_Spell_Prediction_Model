@@ -18,18 +18,15 @@ COPY . /app
 
 
 
+
 # Install Python dependencies
 RUN pip install -r requirements.txt
-RUN apt install supervisor -y
-
 
 # Expose the ports for Rasa and Rasa actions
 EXPOSE 5005 5055
 
 # Copy supervisord configuration
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-COPY start.sh /start.sh
-RUN chmod +x /start.sh
 
 # Switch back to a non-root user
 USER 1001
@@ -38,5 +35,4 @@ USER 1001
 ENV PATH="/usr/bin:/usr/local/bin:/app/.local/bin:${PATH}"
 
 # Run supervisord
-CMD ["/start.sh"]
-
+CMD [ "run", "--enable-api", "--cors", "*"] && CMD ["run", "actions"]
