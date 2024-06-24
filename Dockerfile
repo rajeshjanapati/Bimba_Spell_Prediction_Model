@@ -16,20 +16,27 @@ WORKDIR /app
 # Copy all project files into the container
 COPY . /app
 
+
+
 # Install Python dependencies
 RUN pip install -r requirements.txt
+RUN apt install supervisor -y
+
 
 # Expose the ports for Rasa and Rasa actions
 EXPOSE 5005 5055
 
 # Copy supervisord configuration
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY start.sh /start.sh
+RUN chmod +x /start.sh
 
 # Switch back to a non-root user
 USER 1001
 
 # Ensure the path is set correctly
-ENV PATH="/app/.local/bin:${PATH}"
+ENV PATH="/usr/bin:/usr/local/bin:/app/.local/bin:${PATH}"
 
 # Run supervisord
-CMD ["supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
+CMD ["/start.sh"]
+
